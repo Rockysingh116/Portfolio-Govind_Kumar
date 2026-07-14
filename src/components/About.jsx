@@ -1,119 +1,198 @@
 import React from "react";
+import {
+  MonitorSmartphone,
+  Server,
+  BrainCircuit,
+  Rocket,
+  Briefcase,
+  MapPin,
+  Layers,
+  GraduationCap,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+import SectionHeading from "./SectionHeading.jsx";
+import { about, personal } from "../data/portfolio.js";
+
+const iconMap = {
+  MonitorSmartphone,
+  Server,
+  BrainCircuit,
+  Rocket,
+  Briefcase,
+  MapPin,
+  Layers,
+  GraduationCap,
+};
+
+const container = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
 const About = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-      },
-    },
-  };
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
-    <section id="about" className="py-20 bg-white overflow-hidden">
+    <section id="about" className="relative surface py-24">
       <div className="container mx-auto px-4">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          About Me
-        </motion.h2>
+        <SectionHeading subtitle="The human behind the code — my story, my craft, and what drives me.">
+          About
+        </SectionHeading>
+
         <motion.div
           ref={ref}
-          className="flex flex-col md:flex-row items-center gap-12"
-          variants={containerVariants}
+          className="grid grid-cols-1 gap-12 lg:grid-cols-[340px_1fr] lg:gap-16"
+          variants={container}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
         >
-          <motion.div
-            className="w-full md:w-1/2"
-            variants={itemVariants}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
-              alt="Developer working"
-              className="rounded-lg shadow-lg w-full"
-            />
+          {/* ---------- Left: photo + info ---------- */}
+          <motion.div variants={item} className="space-y-6">
+            <div className="relative overflow-hidden rounded-2xl border border-[var(--border)]">
+              <img
+                src={about.image}
+                alt={`${personal.name} — ${about.badgeRole}`}
+                loading="lazy"
+                className="aspect-[4/5] w-full object-cover"
+              />
+              {about.available && (
+                <div className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-[var(--bg)]/90 px-3 py-1 text-xs font-medium text-[var(--text)] backdrop-blur">
+                  <span className="h-2 w-2 rounded-full bg-green-500" />
+                  Available for work
+                </div>
+              )}
+            </div>
+
+            {/* Quick facts */}
+            <div className="card rounded-2xl p-5">
+              <div className="space-y-4">
+                {about.quickFacts.map((fact) => {
+                  const Icon = iconMap[fact.icon] ?? Layers;
+                  return (
+                    <div key={fact.label} className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
+                        <Icon size={16} />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-xs text-[var(--text-muted)]">
+                          {fact.label}
+                        </p>
+                        <p className="truncate text-sm font-medium text-[var(--text)]">
+                          {fact.value}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="hairline mt-5 flex items-center gap-1 pt-4">
+                {[
+                  { href: personal.socials.github, Icon: Github, label: "GitHub" },
+                  { href: personal.socials.linkedin, Icon: Linkedin, label: "LinkedIn" },
+                  { href: `mailto:${personal.email}`, Icon: Mail, label: "Email" },
+                ].map(({ href, Icon, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
+                <a
+                  href={personal.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 text-sm"
+                >
+                  <Download size={15} /> CV
+                </a>
+              </div>
+            </div>
           </motion.div>
-          <div className="w-full md:w-1/2">
+
+          {/* ---------- Right: story ---------- */}
+          <div>
             <motion.p
-              className="text-lg text-gray-600 mb-6"
-              variants={itemVariants}
+              variants={item}
+              className="mb-6 border-l-2 border-[var(--accent)] pl-4 text-xl font-medium leading-snug text-[var(--text)]"
             >
-              Hi! I’m a <b>Frontend Developer</b> with a passion for building
-              clean, responsive, and user-friendly web applications. I love
-              turning complex ideas into elegant solutions that look great and
-              work seamlessly across devices. I specialize in <b>React</b>,{" "}
-              <b>JavaScript</b>,<b>Tailwind CSS</b>, and <b>HTML/CSS</b>, and
-              I’ve worked on a variety of projects — from{" "}
-              <b>eCommerce platforms</b> to <b>admin dashboards</b> — always
-              focusing on <b>performance</b>, <b>accessibility</b>, and creating
-              smooth <b>UI/UX</b>. I’m committed to writing clean, maintainable
-              code, learning new tools, and staying updated with the latest
-              trends in frontend development. When I’m not coding, you’ll find
-              me exploring design inspiration, experimenting with new ideas, or
-              sharpening my problem-solving skills. Let’s build something
-              amazing together!
+              Great software is about people first, and code second.
             </motion.p>
-            <motion.p
-              className="text-lg text-gray-600 mb-6"
-              variants={itemVariants}
-            ></motion.p>
-            <motion.div
-              className="flex flex-wrap gap-4"
-              variants={containerVariants}
-            >
-              <motion.div
-                className="bg-gray-100 px-4 py-2 rounded-full cursor-pointer"
-                whileHover={{ scale: 1.05, backgroundColor: "#EEF2FF" }}
-                whileTap={{ scale: 0.95 }}
-                variants={itemVariants}
+
+            {about.paragraphs.map((para, i) => (
+              <motion.p
+                key={i}
+                className="mb-4 leading-relaxed text-[var(--text-muted)]"
+                variants={item}
               >
-                <span className="text-gray-700">🎯 Problem Solver</span>
-              </motion.div>
-              <motion.div
-                className="bg-gray-100 px-4 py-2 rounded-full cursor-pointer"
-                whileHover={{ scale: 1.05, backgroundColor: "#EEF2FF" }}
-                whileTap={{ scale: 0.95 }}
-                variants={itemVariants}
-              >
-                <span className="text-gray-700">💡 Creative Thinker</span>
-              </motion.div>
-              <motion.div
-                className="bg-gray-100 px-4 py-2 rounded-full cursor-pointer"
-                whileHover={{ scale: 1.05, backgroundColor: "#EEF2FF" }}
-                whileTap={{ scale: 0.95 }}
-                variants={itemVariants}
-              >
-                <span className="text-gray-700">🚀 Fast Learner</span>
-              </motion.div>
+                {para}
+              </motion.p>
+            ))}
+
+            <motion.div className="mt-8 flex flex-wrap gap-2" variants={container}>
+              {about.traits.map((trait) => (
+                <motion.span
+                  key={trait}
+                  className="cursor-default rounded-full border border-[var(--border)] px-3.5 py-1.5 text-sm text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  variants={item}
+                >
+                  {trait}
+                </motion.span>
+              ))}
             </motion.div>
           </div>
         </motion.div>
+
+        {/* ---------- Expertise ---------- */}
+        <div className="mt-24">
+          <h3 className="mb-10 text-xl font-semibold tracking-tight text-[var(--text)]">
+            What I bring to the table
+          </h3>
+          <motion.div
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+            variants={container}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            {about.expertise.map((exp) => {
+              const Icon = iconMap[exp.icon] ?? MonitorSmartphone;
+              return (
+                <motion.div
+                  key={exp.title}
+                  variants={item}
+                  className="card h-full rounded-2xl p-6"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                    <Icon size={22} />
+                  </div>
+                  <h4 className="mb-2 font-semibold text-[var(--text)]">
+                    {exp.title}
+                  </h4>
+                  <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+                    {exp.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

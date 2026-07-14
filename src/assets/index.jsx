@@ -1,11 +1,9 @@
-import Ecommerce from "../assets/Ecommerce.png";
-import Logo from "../assets/Logo.png";
-import ATS from "../assets/ats.png";
-import IG from "../assets/ig.png";
+import Ecommerce from "../assets/Ecommerce.webp";
+import ATS from "../assets/ats.webp";
+import IG from "../assets/ig.webp";
 
 export const image = {
   Ecommerce,
-  Logo,
   ATS,
   IG,
 };

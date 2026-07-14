@@ -4,7 +4,107 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevGovind</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Govind Kumar — Software Engineer (Full-Stack + AI)</title>
+    <meta
+      name="title"
+      content="Govind Kumar — Software Engineer (Full-Stack + AI)"
+    />
+    <meta
+      name="description"
+      content="Govind Kumar is a Software Engineer building full-stack, AI-powered web applications with React, Next.js, Node.js and Python. Explore his journey from HR to data to engineering, projects, and writing."
+    />
+    <meta
+      name="keywords"
+      content="Govind Kumar, Software Engineer, Full-Stack Developer, React Developer, Next.js, Node.js, Python, TypeScript, Generative AI, LLM, Web Developer, Portfolio, Kolkata, India"
+    />
+    <meta name="author" content="Govind Kumar" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Set theme before paint to avoid a flash of the wrong theme. -->
+    <script>
+      (function () {
+        try {
+          var s = localStorage.getItem("theme");
+          var dark =
+            s === "dark" ||
+            (s !== "light" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {
+          /* localStorage/matchMedia unavailable — fall back to CSS default */
+        }
+      })();
+    </script>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Govind Kumar — Software Engineer (Full-Stack + AI)"
+    />
+    <meta
+      property="og:description"
+      content="Full-stack, AI-powered web development with React, Next.js, Node.js & Python. From HR to data to engineering — explore my work and get in touch."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <!-- EDIT ME: add a 1200x630 og-image.png to /public for rich link previews -->
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Govind Kumar — Software Engineer (Full-Stack + AI)"
+    />
+    <meta
+      name="twitter:description"
+      content="Software Engineer building full-stack, AI-powered web apps with React, Next.js, Node.js & Python."
+    />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Canonical URL — EDIT ME: set to your deployed domain -->
+    <link rel="canonical" href="https://your-domain.com/" />
+
+    <!-- Structured data (JSON-LD) so search engines understand who you are.
+         EDIT ME: update url / sameAs links to your real domain & profiles. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Govind Kumar",
+        "url": "https://your-domain.com/",
+        "image": "https://your-domain.com/og-image.png",
+        "jobTitle": "Software Engineer",
+        "description": "Software Engineer building full-stack, AI-powered web applications with React, Next.js, Node.js and Python.",
+        "email": "mailto:govindkumar.file116@gmail.com",
+        "address": {
+          "@type": "PostalPlace",
+          "addressLocality": "Kolkata",
+          "addressRegion": "West Bengal",
+          "addressCountry": "IN"
+        },
+        "worksFor": {
+          "@type": "Organization",
+          "name": "NextZen Minds Pvt. Ltd."
+        },
+        "sameAs": [
+          "https://github.com/Rockysingh116",
+          "https://linkedin.com/in/govindkumar116"
+        ],
+        "knowsAbout": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "Node.js",
+          "Python",
+          "Generative AI",
+          "Large Language Models",
+          "Web Performance",
+          "Accessibility"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

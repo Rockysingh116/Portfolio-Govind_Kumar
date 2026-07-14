@@ -2,10 +2,200 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   CLEAN MINIMAL — light base, one blue accent, hairline borders.
+   Calm and professional: no gradients, glow, mesh, or shimmer.
+   ============================================================ */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #fafafa; /* alternating section tint */
+  --card: #ffffff;
+  --text: #111111; /* near-black */
+  --text-muted: #6b7280; /* gray-500 */
+  --border: #ececec; /* hairline */
+  --accent: #2563eb; /* the one blue */
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eff4ff; /* accent tint for chips */
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b0d10;
+  --bg-subtle: #101317;
+  --card: #14181d;
+  --text: #f4f5f7;
+  --text-muted: #9aa3af;
+  --border: #232830;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-soft: #172033;
+
+  color-scheme: dark;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 body {
-  @apply text-gray-900;
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Restrained scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================================
+   SEMANTIC UTILITY CLASSES (used across components)
+   ============================================================ */
+
+/* Card: flat surface, hairline border, quiet hover lift. */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow: 0 6px 24px -12px rgba(17, 17, 17, 0.12);
+}
+.dark .card:hover {
+  box-shadow: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Section surfaces */
+.surface {
+  background: var(--bg);
+}
+.surface-subtle {
+  background: var(--bg-subtle);
+}
+
+/* A small accent chip / tag */
+.chip {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+/* Text helpers */
+.text-muted {
+  color: var(--text-muted);
+}
+.accent {
+  color: var(--accent);
+}
+
+/* Primary + secondary buttons */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.16s ease;
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: border-color 0.16s ease, color 0.16s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Hairline divider */
+.hairline {
+  border-top: 1px solid var(--border);
+}
+
+/* Marquee (kept — it's tasteful and used by Skills) */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 34s) linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+.group\/marquee:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Blinking caret for the typing headline */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .animate-marquee {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

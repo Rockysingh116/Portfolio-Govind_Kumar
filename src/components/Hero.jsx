@@ -1,79 +1,160 @@
 import React from "react";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight, FileText, Github, Linkedin, Mail } from "lucide-react";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
+import TypingText from "./TypingText.jsx";
+import { useCountUp } from "../hooks/useCountUp.js";
+import { personal, stats } from "../data/portfolio.js";
+
+const StatItem = ({ stat, start }) => {
+  const value = useCountUp(stat.value, start);
+  return (
+    <div>
+      <p className="text-3xl font-semibold tracking-tight text-[var(--text)] md:text-4xl">
+        {value}
+        {stat.suffix}
+      </p>
+      <p className="mt-1 text-sm text-[var(--text-muted)]">{stat.label}</p>
+    </div>
+  );
+};
+
+// A calm, single fade-up used throughout the hero.
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
 
 const Hero = () => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
+
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 pt-16 overflow-hidden">
-      <div className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
-        >
+    <section
+      id="hero"
+      className="relative flex min-h-screen items-center overflow-hidden surface pt-16"
+    >
+      {/* One very subtle radial tint — nothing busy. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%)",
+        }}
+      />
+
+      <div className="container relative mx-auto px-4 py-20">
+        <div className="mx-auto max-w-3xl">
+          {/* Availability line */}
+          <motion.div
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-sm text-[var(--text-muted)]"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            {personal.statusPill}
+          </motion.div>
+
+          {/* Name + role */}
           <motion.h1
-            className="text-5xl md:text-7xl font-bold text-gray-900 mb-6"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-4xl font-semibold leading-[1.1] tracking-tight text-[var(--text)] sm:text-5xl md:text-6xl"
           >
-            Hi, I'm{" "}
-            <motion.span
-              className="text-indigo-600"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 200 }}
-            >
-              Govind
-            </motion.span>
+            {personal.name}
           </motion.h1>
+
+          <motion.div
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-3 text-2xl font-medium text-[var(--accent)] sm:text-3xl"
+          >
+            <TypingText words={personal.roles} />
+          </motion.div>
+
+          {/* Tagline */}
           <motion.p
-            className="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-muted)]"
           >
-            A frontend developer who turns creative ideas into functional,
-            responsive websites. Let’s make the web a more beautiful place —
-            together.
+            {personal.tagline}
           </motion.p>
+
+          {/* CTAs */}
           <motion.div
-            className="flex justify-center space-x-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <motion.a
-              href="#contact"
-              className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get in Touch
-            </motion.a>
-            <motion.a
+            <a
               href="#projects"
-              className="border-2 border-indigo-600 text-indigo-600 px-8 py-3 rounded-lg hover:bg-indigo-50 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="btn-primary inline-flex items-center gap-2 px-6 py-3 text-sm"
             >
-              View Projects
-            </motion.a>
+              View my work <ArrowRight size={16} />
+            </a>
+            <a
+              href={personal.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
+            >
+              <FileText size={16} /> Resume
+            </a>
+
+            {/* Socials */}
+            <div className="ml-1 flex items-center gap-1">
+              {[
+                { href: personal.socials.github, Icon: Github, label: "GitHub" },
+                { href: personal.socials.linkedin, Icon: Linkedin, label: "LinkedIn" },
+                { href: `mailto:${personal.email}`, Icon: Mail, label: "Email" },
+              ].map(({ href, Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+                >
+                  <Icon size={19} />
+                </a>
+              ))}
+            </div>
           </motion.div>
+
+          {/* Stats — plain, aligned, no boxes */}
           <motion.div
-            className="mt-16"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
+            ref={ref}
+            custom={5}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-16 grid max-w-2xl grid-cols-2 gap-8 border-t border-[var(--border)] pt-8 sm:grid-cols-4"
           >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              <ArrowDown className="mx-auto text-gray-400" size={32} />
-            </motion.div>
+            {stats.map((stat) => (
+              <StatItem key={stat.label} stat={stat} start={inView} />
+            ))}
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
