@@ -9,9 +9,14 @@ lerna-debug.log*
 
 node_modules
 .env
+.env.*
 dist
 dist-ssr
 *.local
+
+# Personal working files (not used by the site; served copy lives in public/)
+*.docx
+*.doc
 
 # Editor directories and files
 .vscode/*
