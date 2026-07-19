@@ -5,7 +5,11 @@ import { useInView } from "react-intersection-observer";
 
 import TypingText from "./TypingText.jsx";
 import { useCountUp } from "../hooks/useCountUp.js";
-import { personal, stats } from "../data/portfolio.js";
+import {
+  personal as staticPersonal,
+  stats as staticStats,
+} from "../data/portfolio.js";
+import { useSiteContent } from "../hooks/useContent.js";
 
 const StatItem = ({ stat, start }) => {
   const value = useCountUp(stat.value, start);
@@ -32,6 +36,9 @@ const fadeUp = {
 
 const Hero = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
+  const { data: site } = useSiteContent();
+  const personal = site.personal ?? staticPersonal;
+  const stats = site.stats ?? staticStats;
 
   return (
     <section

@@ -4,7 +4,11 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
-import { education, languages } from "../data/portfolio.js";
+import {
+  education as staticEducation,
+  languages as staticLanguages,
+} from "../data/portfolio.js";
+import { useContent, useSiteContent } from "../hooks/useContent.js";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -18,6 +22,9 @@ const itemVariants = {
 
 const Qualifications = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: education } = useContent("education", staticEducation);
+  const { data: site } = useSiteContent();
+  const languages = site.languages ?? staticLanguages;
 
   return (
     <section

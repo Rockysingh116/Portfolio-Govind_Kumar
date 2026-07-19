@@ -5,7 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
 import { useToast } from "./Toast.jsx";
-import { personal } from "../data/portfolio.js";
+import { personal as staticPersonal } from "../data/portfolio.js";
+import { useSiteContent } from "../hooks/useContent.js";
 
 // ------------------------------------------------------------------
 //  Web3Forms — free, no-backend contact form.
@@ -29,12 +30,6 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const contactInfo = [
-  { Icon: Mail, text: personal.email, href: `mailto:${personal.email}`, copy: true },
-  { Icon: Phone, text: personal.phone, href: `tel:${personal.phone.replace(/\s/g, "")}` },
-  { Icon: MapPin, text: personal.location, href: null },
-];
-
 const Contact = () => {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
@@ -42,6 +37,24 @@ const Contact = () => {
   const [copied, setCopied] = useState(false);
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const toast = useToast();
+
+  const { data: site } = useSiteContent();
+  const personal = site.personal ?? staticPersonal;
+
+  const contactInfo = [
+    {
+      Icon: Mail,
+      text: personal.email,
+      href: personal.email ? `mailto:${personal.email}` : null,
+      copy: true,
+    },
+    {
+      Icon: Phone,
+      text: personal.phone,
+      href: personal.phone ? `tel:${personal.phone.replace(/\s/g, "")}` : null,
+    },
+    { Icon: MapPin, text: personal.location, href: null },
+  ];
 
   const handleChange = (e) => {
     const { id, value } = e.target;

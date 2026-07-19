@@ -6,10 +6,11 @@ import { useInView } from "react-intersection-observer";
 import SectionHeading from "./SectionHeading.jsx";
 import Carousel from "./Carousel.jsx";
 import BrandLogo from "./BrandLogo.jsx";
-import { testimonials } from "../data/portfolio.js";
+import { testimonials as staticTestimonials } from "../data/portfolio.js";
+import { useContent } from "../hooks/useContent.js";
 
 const initials = (name) =>
-  name
+  (name || "")
     .split(" ")
     .map((w) => w[0])
     .join("")
@@ -58,6 +59,7 @@ const TestimonialCard = ({ t }) => (
 
 const Testimonials = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: testimonials } = useContent("testimonials", staticTestimonials);
 
   if (!testimonials?.length) return null;
 

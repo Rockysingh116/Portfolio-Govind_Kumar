@@ -17,7 +17,11 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
-import { about, personal } from "../data/portfolio.js";
+import {
+  about as staticAbout,
+  personal as staticPersonal,
+} from "../data/portfolio.js";
+import { useSiteContent } from "../hooks/useContent.js";
 
 const iconMap = {
   MonitorSmartphone,
@@ -42,6 +46,9 @@ const item = {
 
 const About = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
+  const { data: site } = useSiteContent();
+  const about = site.about ?? staticAbout;
+  const personal = site.personal ?? staticPersonal;
 
   return (
     <section id="about" className="relative surface py-24">
