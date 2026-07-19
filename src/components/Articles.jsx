@@ -6,7 +6,8 @@ import { useInView } from "react-intersection-observer";
 import SectionHeading from "./SectionHeading.jsx";
 import Carousel from "./Carousel.jsx";
 import ArticleCover from "./ArticleCover.jsx";
-import { articles } from "../data/portfolio.js";
+import { articles as staticArticles } from "../data/portfolio.js";
+import { useContent } from "../hooks/useContent.js";
 
 const ArticleCard = ({ article }) => {
   const isLive = !article.draft && article.link;
@@ -46,7 +47,7 @@ const ArticleCard = ({ article }) => {
       {/* Body */}
       <div className="flex flex-1 flex-col p-6">
         <div className="mb-3 flex flex-wrap gap-2">
-          {article.tags.map((tag) => (
+          {(article.tags || []).map((tag) => (
             <span
               key={tag}
               className="chip px-2.5 py-1 text-xs"
@@ -96,6 +97,7 @@ const ArticleCard = ({ article }) => {
 
 const Articles = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: articles } = useContent("articles", staticArticles);
 
   if (!articles?.length) return null;
 

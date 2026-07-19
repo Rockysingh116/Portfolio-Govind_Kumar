@@ -5,7 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
 import BrandLogo from "./BrandLogo.jsx";
-import { certifications } from "../data/portfolio.js";
+import { certifications as staticCertifications } from "../data/portfolio.js";
+import { useContent } from "../hooks/useContent.js";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -19,6 +20,10 @@ const cardVariants = {
 
 const Certifications = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: certifications } = useContent(
+    "certifications",
+    staticCertifications
+  );
 
   if (!certifications?.length) return null;
 

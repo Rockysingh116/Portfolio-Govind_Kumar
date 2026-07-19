@@ -5,7 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
 import ProjectModal from "./ProjectModal.jsx";
-import { projects } from "../data/portfolio.js";
+import { projects as staticProjects } from "../data/portfolio.js";
+import { useContent } from "../hooks/useContent.js";
 
 const containerVariants = {
   hidden: {},
@@ -27,7 +28,7 @@ function buildFilters(items) {
   const cats = [...new Set(items.map((p) => p.category).filter(Boolean))];
   const techCounts = {};
   items.forEach((p) =>
-    p.technologies.forEach((t) => {
+    (p.technologies || []).forEach((t) => {
       techCounts[t] = (techCounts[t] || 0) + 1;
     })
   );
@@ -45,14 +46,16 @@ const Projects = () => {
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState(null);
 
-  const filters = useMemo(() => buildFilters(projects), []);
+  const { data: projects } = useContent("projects", staticProjects);
+
+  const filters = useMemo(() => buildFilters(projects), [projects]);
 
   const visible = useMemo(() => {
     if (filter === "All") return projects;
     return projects.filter(
-      (p) => p.category === filter || p.technologies.includes(filter)
+      (p) => p.category === filter || (p.technologies || []).includes(filter)
     );
-  }, [filter]);
+  }, [filter, projects]);
 
   return (
     <section
@@ -106,7 +109,7 @@ const Projects = () => {
           <AnimatePresence mode="popLayout">
             {visible.map((project) => (
               <motion.article
-                key={project.title}
+                key={project.id || project.title}
                 layout
                 onClick={() => setSelected(project)}
                 className="card group relative flex cursor-pointer flex-col overflow-hidden rounded-xl shadow-md transition-all "

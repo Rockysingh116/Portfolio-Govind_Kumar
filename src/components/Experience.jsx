@@ -5,7 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 import SectionHeading from "./SectionHeading.jsx";
 import BrandLogo from "./BrandLogo.jsx";
-import { experience } from "../data/portfolio.js";
+import { experience as staticExperience } from "../data/portfolio.js";
+import { useContent } from "../hooks/useContent.js";
 
 // Visual treatment per role type.
 const tagStyles = {
@@ -25,6 +26,7 @@ const tagStyles = {
 
 const Experience = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: experience } = useContent("experience", staticExperience);
 
   return (
     <section
